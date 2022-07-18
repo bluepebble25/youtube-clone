@@ -6,6 +6,7 @@ const users = require('./router/users');
 const favorite = require('./router/favorite');
 const comment = require('./router/comment');
 const like = require('./router/like');
+const videos = require('./router/videos');
 
 // config
 require('dotenv').config({ path: './config/.env'});
@@ -29,6 +30,7 @@ app.use('/api/users', users);
 app.use('/api/favorite', favorite);
 app.use('/api/comment', comment);
 app.use('/api/like', like);
+app.use('/api/videos', videos);
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
