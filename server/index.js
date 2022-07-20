@@ -9,7 +9,7 @@ const like = require('./router/like');
 const videos = require('./router/videos');
 
 // config
-require('dotenv').config({ path: './config/.env'});
+require('dotenv').config({ path: '../.env'});
 const port = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 

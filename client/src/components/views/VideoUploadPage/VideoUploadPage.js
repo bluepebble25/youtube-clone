@@ -6,7 +6,7 @@ import axios from 'axios';
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const PrivateOption = [
+const PrivacyOption = [
   { value: 0, label: "Private" },
   { value: 1, label: "Public" }
 ];
@@ -22,9 +22,11 @@ function VideoUploadPage() {
 
   const [VideoTitle, setVideoTitle] = useState("");
   const [Description, setDescription] = useState("");
-  const [Private, setPrivate] = useState(0);  // 0: private, 1: public
-  // boolean이 아닌 이유 - 일부 공개처럼 다른 옵션 존재 가능
+  const [Privacy, setPrivacy] = useState(0);  // 0: private, 1: public
   const [Category, setCategory] = useState(0);
+  const [FilePath, setFilePath] = useState("");
+  const [Duration, setDuration] = useState("");
+  const [Thumbnail, setThumbnail] = useState("");
 
   const onTitleChange = (event) => {
     setVideoTitle(event.currentTarget.value);
@@ -34,8 +36,8 @@ function VideoUploadPage() {
     setDescription(event.currentTarget.value);
   };
 
-  const onPrivateChange = (event) => {
-    setPrivate(event.currentTarget.value);
+  const onPrivacyChange = (event) => {
+    setPrivacy(event.currentTarget.value);
   };
 
   const onCategoryChange = (event) => {
@@ -50,10 +52,24 @@ function VideoUploadPage() {
     };
     formData.append('file', files[0]);  // <input name='file' value=files[0]>
 
-    axios.post('/api/videos', formData, config)
+    axios.post('/api/videos/uploadfiles', formData, config)
         .then(response => {
-          if(response.data.success) {
+          if(response.status === 200) {
             console.log(response.data);
+            setFilePath(response.data.filePath);
+
+            let variable = {
+              filePath: response.data.filePath,
+              fileName: response.data.fileName
+            };
+            
+            axios.post('/api/videos/thumbnail', variable)
+              .then(response => {
+                console.log(response.data);
+                setThumbnail(response.data.thumbnailPath);
+                setDuration(response.data.fileDuration);
+              });
+
           } else {
             alert('비디오 업로드를 실패했습니다.');
           }
@@ -87,6 +103,9 @@ function VideoUploadPage() {
 
 
           {/* Thumbnail */}
+          {/* <div>
+            <img src={thumbnailPath} alt="thumbnail" />
+          </div> */}
 
         </div>
 
@@ -112,8 +131,8 @@ function VideoUploadPage() {
         <br />
         <br />
 
-        <select onChange={onPrivateChange}>
-          {PrivateOption.map((item, index) => (
+        <select onChange={onPrivacyChange}>
+          {PrivacyOption.map((item, index) => (
             <option key={index} value={item.value} >{item.label}</option>
           ))}
         </select>
