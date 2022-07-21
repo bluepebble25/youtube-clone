@@ -32,6 +32,8 @@ app.use('/api/comment', comment);
 app.use('/api/like', like);
 app.use('/api/videos', videos);
 
+app.use('/uploads', express.static('uploads'));
+
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
 });

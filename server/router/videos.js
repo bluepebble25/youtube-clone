@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const { Video } = require('../models/Video');
+const { Video } = require('../models/Video');
 
 const { auth } = require('../middleware/auth');
 const multer = require('multer');
@@ -82,6 +82,14 @@ router.post('/uploadfiles', (req, res) => {
 
 router.post('/thumbnail', (req, res) => {
   makeThumbnail(req.body.filePath, res);
+});
+
+router.post('/uploadVideo', (req, res) => {
+  const video = new Video(req.body);
+  video.save((err, doc) => {
+    if(err) return res.status(500).json(err);
+    return res.status(201).end();
+  });
 });
 
 module.exports = router;

@@ -2,6 +2,7 @@
 /build
 
 .env
+uploads
 
 .DS_Store
 
