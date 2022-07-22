@@ -101,4 +101,15 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:videoId', (req, res) => {
+  const videoId = req.params.videoId;
+
+  Video.findOne({ "_id": videoId })
+    .populate('writer')
+    .exec((err, videoDetail) => {
+      if(err) return res.status(400).send(err);
+      return res.status(200).json({videoDetail});
+    });
+});
+
 module.exports = router;
