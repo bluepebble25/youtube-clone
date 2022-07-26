@@ -19,7 +19,6 @@ function VideoDetailPage(props) {
       .then(response => {
         if(response.status === 200) {
           setVideoDetail(response.data.videoDetail);
-          console.log('videoinfo:', response.data);
           fetchSubscriberNumbers(response.data.videoDetail.writer._id);
         } else {
           alert('비디오 정보를 가져오는데 실패했습니다.');
@@ -43,6 +42,11 @@ function VideoDetailPage(props) {
   };
 
   if(VideoDetail) {
+    const subscribeButton = VideoDetail.writer._id !== localStorage.getItem('userId')
+    && <Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}
+                subscriberNumber={SubscriberNumber} onSubscriberNumber={onSubscriberNumber}
+        />
+
     return (
       <Row>
         <Col lg={18} xs={24}>
@@ -59,10 +63,7 @@ function VideoDetailPage(props) {
             </List.Item>
 
             <List.Item
-              actions={[<Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}
-                                  subscriberNumber={SubscriberNumber} onSubscriberNumber={onSubscriberNumber}
-                        />
-                      ]}
+              actions={[subscribeButton]}
             >
               <List.Item.Meta
                 avatar={<Avatar src={VideoDetail.writer.image} />}
