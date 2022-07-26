@@ -7,6 +7,7 @@ const favorite = require('./router/favorite');
 const comment = require('./router/comment');
 const like = require('./router/like');
 const videos = require('./router/videos');
+const subscribe = require('./router/subscribe');
 
 // config
 require('dotenv').config({ path: '../.env'});
@@ -31,6 +32,7 @@ app.use('/api/favorite', favorite);
 app.use('/api/comment', comment);
 app.use('/api/like', like);
 app.use('/api/videos', videos);
+app.use('/api/subscribe', subscribe);
 
 app.use('/uploads', express.static('uploads'));
 
