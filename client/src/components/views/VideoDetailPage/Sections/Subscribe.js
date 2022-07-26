@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useSelector } from 'react-redux';
 
 function Subscribe(props) {
-  const user = useSelector(state => state.user);
   const [IsSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
-    if(user.userData) {
-      let subscribedVariable = { userTo: props.userTo, userFrom: props.userFrom };
+    fetchSubscribed();
+  }, []);
+
+  const fetchSubscribed = () => {
+    let subscribedVariable = { userTo: props.userTo, userFrom: props.userFrom };
       axios.post('/api/subscribe/subscribed', subscribedVariable)
         .then(response => {
           if(response.status === 200) {
@@ -17,16 +18,48 @@ function Subscribe(props) {
           } else {
             alert('구독 정보를 가져오지 못했습니다.');
           }
-        })
+        });
+  };
+
+  const onSubscribe = () => {
+    let subscribeVariable = {
+      userTo: props.userTo,
+      userFrom: props.userFrom
+    };
+
+    if(IsSubscribed) {
+    // 이미 구독 중이라면 구독 취소
+      axios.post('/api/subscribe/unSubscribe', subscribeVariable)
+        .then(response => {
+          if(response.status === 200) {
+            setIsSubscribed(!IsSubscribed);
+            props.onSubscriberNumber(props.subscriberNumber - 1);
+          } else {
+            alert('구독 취소에 실패했습니다.');
+          }
+        });
+
+    } else {
+    // 구독하지 않은 상태라면 구독하기
+      axios.post('/api/subscribe/subscribe', subscribeVariable)
+        .then(response => {
+          if(response.status === 200) {
+            setIsSubscribed(!IsSubscribed);
+            props.onSubscriberNumber(props.subscriberNumber + 1);
+          } else {
+            alert('구독에 실패했습니다.');
+          }
+        });
     }
-  }, [user]);
-  
+  };
 
   return (
-    <button style={{ backgroundColor: `${IsSubscribed ? '#AAAAA' : '#CC0000'}`, borderRadius: '4px', border: 'none',
+    <button style={{ backgroundColor: `${IsSubscribed ? '#AAAAAA' : '#CC0000'}`, borderRadius: '4px', border: 'none',
                     color: `${IsSubscribed ? '757575' : 'white'}`, padding: '10px 16px', cursor: 'pointer',
                     fontWeight: '500', fontSize: '1rem', textTransform: 'uppercase'
-    }}>
+                  }}
+            onClick={onSubscribe}
+    >
       {IsSubscribed ? 'Subscribed' : 'Subscribe'}
     </button>
   )

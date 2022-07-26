@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Row, Col, List, Avatar } from 'antd'
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import moment from 'moment';
 import SideVideo from './Sections/SideVideo';
 import Subscribe from './Sections/Subscribe';
 
 function VideoDetailPage(props) {
-  const user = useSelector(state => state.user);
-
   const [VideoDetail, setVideoDetail] = useState(null);
   const [SubscriberNumber, setSubscriberNumber] = useState(0);
 
@@ -38,8 +35,13 @@ function VideoDetailPage(props) {
         } else {
           alert('구독자 수를 가져오는데 실패했습니다.');
         }
-      })
+      });
   };
+
+  const onSubscriberNumber = (newValue) => {
+    setSubscriberNumber(newValue);
+  };
+
   if(VideoDetail) {
     return (
       <Row>
@@ -57,7 +59,10 @@ function VideoDetailPage(props) {
             </List.Item>
 
             <List.Item
-              actions={[<Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />]}
+              actions={[<Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}
+                                  subscriberNumber={SubscriberNumber} onSubscriberNumber={onSubscriberNumber}
+                        />
+                      ]}
             >
               <List.Item.Meta
                 avatar={<Avatar src={VideoDetail.writer.image} />}

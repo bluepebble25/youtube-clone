@@ -24,8 +24,27 @@ router.post('/subscribed', (req, res) => {
         result = true;
       }
       return res.status(200).json({ isSubscribed: result });
-    })
-
+    });
 });
+
+router.post('/subscribe', (req, res) => {
+  const subscriber = new Subscriber(req.body);
+  
+  subscriber.save((err, doc) => {
+    if(err) return res.status(400).send(err);
+    return res.status(200).end();
+  });
+});
+
+router.post('/unSubscribe', (req, res) => {
+  Subscriber.findOneAndDelete({ userTo: req.body.userTo, userFrom: req.body.userFrom })
+  .exec((err, doc) => {
+    if(err) return res.status(400).send(err);
+
+    return res.status(200).json({ doc });
+  });
+});
+
+
 
 module.exports = router;
