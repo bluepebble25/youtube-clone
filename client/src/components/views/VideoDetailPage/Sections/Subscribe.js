@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux';
 
 function Subscribe(props) {
+  const user = useSelector(state => state.user);
+
   const [IsSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
@@ -14,7 +17,6 @@ function Subscribe(props) {
         .then(response => {
           if(response.status === 200) {
             setIsSubscribed(response.data.isSubscribed);
-            console.log(response.data.isSubscribed);
           } else {
             alert('구독 정보를 가져오지 못했습니다.');
           }
@@ -22,6 +24,10 @@ function Subscribe(props) {
   };
 
   const onSubscribe = () => {
+    if(user.userData && !user.userData.isAuth) {
+      return alert('로그인을 해주세요');
+    }
+
     let subscribeVariable = {
       userTo: props.userTo,
       userFrom: props.userFrom

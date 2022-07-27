@@ -10,8 +10,9 @@ const LikeSchema = mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Comment'
   },
-  movieId: {
-    type: String
+  videoId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Video'
   }
 }, { timestamps: true });
 

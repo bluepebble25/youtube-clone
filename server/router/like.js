@@ -8,8 +8,8 @@ router.post('/getLikes', (req, res) => {
 
   let variable = {};
 
-  if(req.body.movieId) {
-    variable = { movieId: req.body.movieId }
+  if(req.body.videoId) {
+    variable = { videoId: req.body.videoId }
   } else {
     variable = { commentId: req.body.commentId }
   }
@@ -25,8 +25,8 @@ router.post('/getDislikes', (req, res) => {
 
   let variable = {};
 
-  if(req.body.movieId) {
-    variable = { movieId: req.body.movieId }
+  if(req.body.videoId) {
+    variable = { videoId: req.body.videoId }
   } else {
     variable = { commentId: req.body.commentId }
   }
@@ -41,8 +41,8 @@ router.post('/getDislikes', (req, res) => {
 router.post('/upLike', (req, res) => {
   let variable = {};
 
-  if(req.body.movieId) {
-    variable = { movieId: req.body.movieId, userId: req.body.userId }
+  if(req.body.videoId) {
+    variable = { videoId: req.body.videoId, userId: req.body.userId }
   } else {
     variable = { commentId: req.body.commentId, userId: req.body.userId }
   }
@@ -64,8 +64,8 @@ router.post('/upLike', (req, res) => {
 router.post('/upDislike', (req, res) => {
   let variable = {};
 
-  if(req.body.movieId) {
-    variable = { movieId: req.body.movieId, userId: req.body.userId }
+  if(req.body.videoId) {
+    variable = { videoId: req.body.videoId, userId: req.body.userId }
   } else {
     variable = { commentId: req.body.commentId, userId: req.body.userId }
   }
@@ -87,8 +87,8 @@ router.post('/unLike', (req, res) => {
 
   let variable = {};
 
-  if(req.body.movieId) {
-    variable = { movieId: req.body.movieId, userId: req.body.userId }
+  if(req.body.videoId) {
+    variable = { videoId: req.body.videoId, userId: req.body.userId }
   } else {
     variable = { commentId: req.body.commentId, userId: req.body.userId }
   }
@@ -105,8 +105,8 @@ router.post('/unDislike', (req, res) => {
 
   let variable = {};
 
-  if(req.body.movieId) {
-    variable = { movieId: req.body.movieId, userId: req.body.userId }
+  if(req.body.videoId) {
+    variable = { videoId: req.body.videoId, userId: req.body.userId }
   } else {
     variable = { commentId: req.body.commentId, userId: req.body.userId }
   }

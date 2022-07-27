@@ -5,25 +5,26 @@ const { auth } = require('../middleware/auth');
 
 router.post('/saveComment', auth, (req, res) => {
   const comment = new Comment(req.body);
-
   comment.save((err, comment) => {
-    if(err) return res.json({ success: false, err });
+    if(err) return res.status(400).json({ err });
 
     Comment.find({ '_id': comment._id })
       .populate('writer')
       .exec((err, result) => {
-        if(err) return res.json({ success: false, err });
-        res.status(200).json({ success: true, result: result });
+        if(err) return res.status(400).json(err);
+        res.status(200).json({ result: result });
       });
   });
 });
 
-router.post('/getComments', (req, res) => {
-  Comment.find({ 'movieId': req.body.movieId })
+router.get('/:videoId', (req, res) => {
+  const videoId = req.params.videoId;
+
+  Comment.find({ 'videoId': videoId })
     .populate('writer')
     .exec((err, comments) => {
       if(err) return res.status(400).send(err);
-      res.status(200).json({ success: true, comments });
+      res.status(200).json({ comments });
     });
 });
 

@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, List, Avatar } from 'antd'
 import axios from 'axios';
 import moment from 'moment';
+import { Row, Col, List, Avatar } from 'antd'
 import SideVideo from './Sections/SideVideo';
 import Subscribe from './Sections/Subscribe';
+import LikeDislikes from './Sections/LikeDislikes';
+import Comments from './Sections/Comments';
 
 function VideoDetailPage(props) {
   const [VideoDetail, setVideoDetail] = useState(null);
   const [SubscriberNumber, setSubscriberNumber] = useState(0);
+  const [CommentLists, setCommentLists] = useState([]);
 
   const videoId = props.match.params.videoId;
   useEffect(() => {
     fetchVideoInfo();
+    fetchComments();
   }, []);
 
   const fetchVideoInfo = () => {
@@ -37,8 +41,23 @@ function VideoDetailPage(props) {
       });
   };
 
+  const fetchComments = () => {
+    axios.get(`/api/comment/${videoId}`)
+      .then(response => {
+          if (response.status === 200) {
+            setCommentLists(response.data.comments);
+          } else {
+            alert('댓글을 가져오는데 실패했습니다.')
+          }
+      });
+  };
+
   const onSubscriberNumber = (newValue) => {
     setSubscriberNumber(newValue);
+  };
+
+  const updateComment = (newComment) => {
+    setCommentLists(CommentLists.concat(newComment))
   };
 
   if(VideoDetail) {
@@ -55,7 +74,7 @@ function VideoDetailPage(props) {
             <h1 style={{ fontSize: '18px', paddingTop: '1rem' }}>{VideoDetail.title}</h1>
           <List>
             <List.Item
-              actions={[]}
+              actions={[<LikeDislikes videoId={videoId} userId={localStorage.getItem('userId')} />]}
             >
               <List.Item.Meta
                 description={VideoDetail.views + ' views • ' + moment(VideoDetail.createdAt).format("MMM DD, YY")}
@@ -73,6 +92,7 @@ function VideoDetailPage(props) {
             </List.Item>
 
           </List>
+          <Comments videoId={videoId} commentLists={CommentLists} refreshComments={updateComment} />
           </div>
         </Col>
 
