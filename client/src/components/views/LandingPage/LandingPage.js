@@ -13,7 +13,6 @@ function LandingPage() {
     axios.get('/api/videos')
       .then(response => {
         if(response.status === 200) {
-          console.log(response.data);
           setVideos(response.data.videos);
         } else {
           alert('비디오를 가져오는데 실패했습니다.');

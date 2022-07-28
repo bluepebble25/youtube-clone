@@ -3,7 +3,6 @@ const app = express();
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const users = require('./router/users');
-const favorite = require('./router/favorite');
 const comment = require('./router/comment');
 const like = require('./router/like');
 const videos = require('./router/videos');
@@ -28,7 +27,6 @@ mongoose.connect(MONGO_URI)
 
 // Routing
 app.use('/api/users', users);
-app.use('/api/favorite', favorite);
 app.use('/api/comment', comment);
 app.use('/api/like', like);
 app.use('/api/videos', videos);
